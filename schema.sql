@@ -1,17 +1,17 @@
-CREATE TABLE user (
+CREATE TABLE IF NOT EXISTS  user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     pseudo TEXT NOT NULL UNIQUE,
     mail TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL
 );
-CREATE TABLE session (
+CREATE TABLE IF NOT EXISTS  session (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     date DATETIME,
     user_id INTEGER NOT NULL,
     session_id TEXT NOT NULL UNIQUE,
     FOREIGN KEY (user_id) REFERENCES user(id)  
 );
-CREATE TABLE post (
+CREATE TABLE IF NOT EXISTS  post (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     titre TEXT NOT NULL,
     description TEXT,
@@ -20,7 +20,7 @@ CREATE TABLE post (
     image TEXT,
     FOREIGN KEY (user_id) REFERENCES user(id)  
 );
-CREATE TABLE post_likes (
+CREATE TABLE IF NOT EXISTS  post_likes (
     user_id INTEGER NOT NULL,
     post_id INTEGER NOT NULL,
     type    TEXT NOT NULL CHECK(type IN ('like', 'dislike')),
@@ -28,7 +28,7 @@ CREATE TABLE post_likes (
     FOREIGN KEY (user_id) REFERENCES user(id),
     FOREIGN KEY (post_id) REFERENCES post(id) 
 );
-CREATE TABLE category (
+CREATE TABLE IF NOT EXISTS  category (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL UNIQUE
 );
@@ -39,14 +39,14 @@ CREATE TABLE category (
     INSERT INTO category (name) VALUES ('technologie');
     INSERT INTO category (name) VALUES ('divertissement');
 
-CREATE TABLE post_category (
+CREATE TABLE IF NOT EXISTS  post_category (
     post_id     INTEGER NOT NULL,
     category_id INTEGER NOT NULL,
     PRIMARY KEY (post_id, category_id),
     FOREIGN KEY (post_id)     REFERENCES post(id),
     FOREIGN KEY (category_id) REFERENCES category(id)
 );
-CREATE TABLE comment (
+CREATE TABLE IF NOT EXISTS  comment (
     id      INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     post_id INTEGER NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE comment (
     FOREIGN KEY (user_id) REFERENCES user(id),
     FOREIGN KEY (post_id) REFERENCES post(id) 
 );
-CREATE TABLE comment_likes (
+CREATE TABLE IF NOT EXISTS  comment_likes (
     user_id    INTEGER NOT NULL,
     comment_id INTEGER NOT NULL,
     type       TEXT    NOT NULL CHECK(type IN ('like', 'dislike')),
